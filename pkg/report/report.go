@@ -3043,7 +3043,7 @@ func (r *pdfReporter) createTechnicalAssets(parsedModel *types.Model) {
 		}
 		r.pdfColorGray()
 		r.pdf.CellFormat(5, 6, "", "0", 0, "", false, 0, "")
-		r.pdf.CellFormat(40, 6, "Technology:", "0", 0, "", false, 0, "")
+		r.pdf.CellFormat(40, 6, "Technologies:", "0", 0, "", false, 0, "")
 		r.pdfColorBlack()
 		r.pdf.MultiCell(145, 6, technicalAsset.Technologies.String(), "0", "0", false)
 		if r.pdf.GetY() > 270 {
@@ -3181,6 +3181,26 @@ func (r *pdfReporter) createTechnicalAssets(parsedModel *types.Model) {
 			formatsAcceptedText = "none of the special data formats accepted"
 		}
 		r.pdf.MultiCell(145, 6, formatsAcceptedText, "0", "0", false)
+
+		r.pdfColorGray()
+		r.pdf.CellFormat(5, 6, "", "0", 0, "", false, 0, "")
+		r.pdf.CellFormat(40, 6, "Trust Level:", "0", 0, "", false, 0, "")
+		r.pdfColorBlack()
+		r.pdf.MultiCell(145, 6, technicalAsset.TrustLevel.Explain(), "0", "0", false)
+		if r.pdf.GetY() > 270 {
+			r.pageBreak()
+			r.pdf.SetY(36)
+		}
+
+		r.pdfColorGray()
+		r.pdf.CellFormat(5, 6, "", "0", 0, "", false, 0, "")
+		r.pdf.CellFormat(40, 6, "Internally Developed:", "0", 0, "", false, 0, "")
+		r.pdfColorBlack()
+		r.pdf.MultiCell(145, 6, strconv.FormatBool(technicalAsset.InternallyDeveloped), "0", "0", false)
+		if r.pdf.GetY() > 270 {
+			r.pageBreak()
+			r.pdf.SetY(36)
+		}
 
 		r.pdf.Ln(-1)
 		r.pdf.Ln(4)

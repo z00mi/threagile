@@ -12,7 +12,7 @@ type TechnicalAsset struct {
 	JustificationOutOfScope string                       `yaml:"justification_out_of_scope,omitempty" json:"justification_out_of_scope,omitempty"`
 	Size                    string                       `yaml:"size,omitempty" json:"size,omitempty"`
 	Technology              string                       `yaml:"technology,omitempty" json:"technology,omitempty"`
-	Technologies            []string                     `yaml:"technologies,omitempty" json:"technologies,omitempty"`
+	Technologies            []Technology                 `yaml:"technologies,omitempty" json:"technologies,omitempty"`
 	Tags                    []string                     `yaml:"tags,omitempty" json:"tags,omitempty"`
 	Internet                bool                         `yaml:"internet,omitempty" json:"internet,omitempty"`
 	Machine                 string                       `yaml:"machine,omitempty" json:"machine,omitempty"`
@@ -30,6 +30,8 @@ type TechnicalAsset struct {
 	DataFormatsAccepted     []string                     `yaml:"data_formats_accepted,omitempty" json:"data_formats_accepted,omitempty"`
 	DiagramTweakOrder       int                          `yaml:"diagram_tweak_order,omitempty" json:"diagram_tweak_order,omitempty"`
 	CommunicationLinks      map[string]CommunicationLink `yaml:"communication_links,omitempty" json:"communication_links,omitempty"`
+	TrustLevel              string                       `yaml:"trust_level,omitempty" json:"trust_level,omitempty"`
+	InternallyDeveloped     bool                         `yaml:"internally_developed,omitempty" json:"internally_developed,omitempty"`
 }
 
 func (what *TechnicalAsset) Merge(other TechnicalAsset) error {
@@ -69,10 +71,7 @@ func (what *TechnicalAsset) Merge(other TechnicalAsset) error {
 		return fmt.Errorf("failed to merge size: %w", mergeError)
 	}
 
-	what.Technology, mergeError = new(Strings).MergeSingleton(what.Technology, other.Technology)
-	if mergeError != nil {
-		return fmt.Errorf("failed to merge technology: %w", mergeError)
-	}
+	what.Technologies = append(what.Technologies, other.Technologies...)
 
 	what.Tags = new(Strings).MergeUniqueSlice(what.Tags, other.Tags)
 
@@ -137,6 +136,15 @@ func (what *TechnicalAsset) Merge(other TechnicalAsset) error {
 	what.CommunicationLinks, mergeError = new(CommunicationLink).MergeMap(what.CommunicationLinks, other.CommunicationLinks)
 	if mergeError != nil {
 		return fmt.Errorf("failed to merge communication_links: %w", mergeError)
+	}
+
+	what.TrustLevel, mergeError = new(Strings).MergeSingleton(what.TrustLevel, other.TrustLevel)
+	if mergeError != nil {
+		return fmt.Errorf("failed to merge trust_level: %w", mergeError)
+	}
+
+	if !what.InternallyDeveloped {
+		what.InternallyDeveloped = other.InternallyDeveloped
 	}
 
 	return nil

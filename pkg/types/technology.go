@@ -1,6 +1,8 @@
 package types
 
-import "strings"
+import (
+	"strings"
+)
 
 const (
 	AI                     = "ai"
@@ -69,6 +71,8 @@ type Technology struct {
 	Aliases     []string        `yaml:"aliases,omitempty" json:"aliases,omitempty"`
 	Examples    []string        `yaml:"examples,omitempty" json:"examples,omitempty"`
 	Attributes  map[string]bool `yaml:"attributes,omitempty" json:"attributes,omitempty"`
+	Version     string          `yaml:"version,omitempty" json:"version,omitempty"`
+	CustomName  string          `yaml:"custom_name,omitempty" json:"custom_name,omitempty"`
 }
 
 func (what Technology) String() string {
@@ -104,6 +108,14 @@ func (what Technology) Explain() string {
 		for _, example := range what.Examples {
 			text = append(text, "  - "+example)
 		}
+	}
+
+	if strings.TrimSpace(what.Version) != "" {
+		text = append(text, "Version: "+what.Version)
+	}
+
+	if strings.TrimSpace(what.CustomName) != "" {
+		text = append(text, "Custom name: "+what.Version)
 	}
 
 	return strings.Join(text, "\n")

@@ -37,6 +37,8 @@ type TechnicalAsset struct {
 	CommunicationLinks      []*CommunicationLink  `json:"communication_links,omitempty" yaml:"communication_links,omitempty"`
 	DiagramTweakOrder       int                   `json:"diagram_tweak_order,omitempty" yaml:"diagram_tweak_order,omitempty"`
 	RAA                     float64               `json:"raa,omitempty" yaml:"raa,omitempty"` // will be set by separate calculation step
+	TrustLevel              TrustLevel            `json:"trust_level,omitempty" yaml:"trust_level,omitempty"`
+	InternallyDeveloped     bool                  `json:"internally_developed,omitempty" yaml:"internally_developed,omitempty"`
 }
 
 func (what TechnicalAsset) IsTaggedWithAny(tags ...string) bool {

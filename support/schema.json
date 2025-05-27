@@ -480,64 +480,85 @@
             ],
             "uniqueItems": true,
             "items": {
-              "type": "string",
-              "enum": [
-                "unknown-technology",
-                "client-system",
-                "browser",
-                "desktop",
-                "mobile-app",
-                "devops-client",
-                "web-server",
-                "web-application",
-                "application-server",
-                "database",
-                "file-server",
-                "local-file-system",
-                "erp",
-                "cms",
-                "web-service-rest",
-                "web-service-soap",
-                "ejb",
-                "search-index",
-                "search-engine",
-                "service-registry",
-                "reverse-proxy",
-                "load-balancer",
-                "build-pipeline",
-                "sourcecode-repository",
-                "artifact-registry",
-                "code-inspection-platform",
-                "monitoring",
-                "ldap-server",
-                "container-platform",
-                "batch-processing",
-                "event-listener",
-                "identity-provider",
-                "identity-store-ldap",
-                "identity-store-database",
-                "tool",
-                "cli",
-                "task",
-                "function",
-                "gateway",
-                "iot-device",
-                "message-queue",
-                "stream-processing",
-                "service-mesh",
-                "data-lake",
-                "report-engine",
-                "ai",
-                "mail-server",
-                "vault",
-                "hsm",
-                "waf",
-                "ids",
-                "ips",
-                "scheduler",
-                "mainframe",
-                "block-storage",
-                "library"
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "description": "Technology kind",
+                  "type": "string",
+                  "enum": [
+                    "unknown-technology",
+                    "client-system",
+                    "browser",
+                    "desktop",
+                    "mobile-app",
+                    "devops-client",
+                    "web-server",
+                    "web-application",
+                    "application-server",
+                    "database",
+                    "file-server",
+                    "local-file-system",
+                    "erp",
+                    "cms",
+                    "web-service-rest",
+                    "web-service-soap",
+                    "ejb",
+                    "search-index",
+                    "search-engine",
+                    "service-registry",
+                    "reverse-proxy",
+                    "load-balancer",
+                    "build-pipeline",
+                    "sourcecode-repository",
+                    "artifact-registry",
+                    "code-inspection-platform",
+                    "monitoring",
+                    "ldap-server",
+                    "container-platform",
+                    "batch-processing",
+                    "event-listener",
+                    "identity-provider",
+                    "identity-store-ldap",
+                    "identity-store-database",
+                    "tool",
+                    "cli",
+                    "task",
+                    "function",
+                    "gateway",
+                    "iot-device",
+                    "message-queue",
+                    "stream-processing",
+                    "service-mesh",
+                    "data-lake",
+                    "report-engine",
+                    "ai",
+                    "mail-server",
+                    "vault",
+                    "hsm",
+                    "waf",
+                    "ids",
+                    "ips",
+                    "scheduler",
+                    "mainframe",
+                    "block-storage",
+                    "library"
+                  ]
+                },
+                "name": {
+                  "description": "Custom name",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "Version",
+                  "type": "string"
+                },
+                "description": {
+                  "description": "Custom description",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind"
               ]
             }
           },
@@ -852,6 +873,19 @@
                 "usage"
               ]
             }
+          },
+          "trust_level":{
+            "description": "Trust level",
+            "type": "string",
+            "enum": [
+              "valid-user-credentials",
+              "api-key",
+	            "service-account"
+            ]
+          },
+          "internally_developed": {
+            "description": "Indicates whether the technical asset is developed internally by the organization.",
+            "type": "boolean"
           }
         },
         "required": [

@@ -11,7 +11,8 @@ import (
 type DataClassification int
 
 const (
-	PublicData DataClassification = iota
+	UndefinedDataClassification DataClassification = iota
+	PublicData
 	InternalUseData
 	ConfidentialData
 	RetrictedData
@@ -20,6 +21,7 @@ const (
 
 func DataClassificationValues() []TypeEnum {
 	return []TypeEnum{
+		UndefinedDataClassification,
 		PublicData,
 		InternalUseData,
 		ConfidentialData,
@@ -29,10 +31,14 @@ func DataClassificationValues() []TypeEnum {
 }
 
 func ParseDataClassification(value string) (dataClassification DataClassification, err error) {
+	if len(value) == 0 {
+		return UndefinedDataClassification, nil
+	}
 	return DataClassification(0).Find(value)
 }
 
 var DataClassificationTypeDescription = [...]TypeDescription{
+	{"", ""}, // UndefinedDataClassification
 	{"public", "Stored, not active"},
 	{"internal-use", "If this fails, people will just have an ad-hoc coffee break until it is back"},
 	{"confidential", "Issues here results in angry people"},

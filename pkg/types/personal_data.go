@@ -29,6 +29,9 @@ func PersonalDataKindValues() []TypeEnum {
 }
 
 func ParsePersonalDataKind(value string) (dataClassification PersonalDataKind, err error) {
+	if len(value) == 0 {
+		return None, nil
+	}
 	return PersonalDataKind(0).Find(value)
 }
 

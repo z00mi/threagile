@@ -38,9 +38,22 @@ func (what TechnologyList) String() string {
 	names := make([]string, len(what))
 	for i, technology := range what {
 		names[i] = technology.String()
+
+		additionalInfo := make([]string, 0)
+		if strings.TrimSpace(technology.CustomName) != "" {
+			additionalInfo = append(additionalInfo, technology.CustomName)
+		}
+
+		if strings.TrimSpace(technology.Version) != "" {
+			additionalInfo = append(additionalInfo, "ver. "+technology.Version)
+		}
+
+		if len(additionalInfo) > 0 {
+			names[i] += " (" + strings.Join(additionalInfo, ", ") + ")"
+		}
 	}
 
-	return strings.Join(names, "/")
+	return strings.Join(names, " / ")
 }
 
 func (what TechnologyList) GetAttribute(firstAttribute string, otherAttributes ...string) bool {

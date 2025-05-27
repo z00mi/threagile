@@ -26,11 +26,14 @@
 
 ## CVSS Integration
 - Calculate Vector String and Rating according to [NIST CVSS v3 calculator](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator)
-  - Attack Complexity (AC) -> Likelyhood?
-  - Privileges Required (PR) -> tam gdzie comlink wymaga autoryzacji to jest high
-  - Scope (S) -> Impact
+  - We threagile ustawić te metryki, które się da 
+    - Attack Complexity (AC) -> Likelyhood?
+    - Privileges Required (PR) -> tam gdzie comlink wymaga autoryzacji to jest high
+    - Scope (S) -> Impact
+  - W rozszerzeniu Do VsCode dodać możliwość ustawienia wszystkich metryk i tam obliczać według kalkulatora
+  
 
-## Technical Asset Enhancements
+## Technical Asset Enhancements **[DONE]**
 - Modify the `technologies` tag by changing it to an array of objects that have the following properties:
   - `name`: "POSTMAN"
   - `version`: 4.0
@@ -40,3 +43,4 @@
   - "API Key"
   - "Service Account"
 - Add new boolean tag `internally_developed`
+- schema do modyfikacji

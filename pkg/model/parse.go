@@ -194,16 +194,23 @@ func ParseModel(config technologyMapConfigReader, modelInput *input.Model, built
 		}
 
 		technicalAssetTechnologies := make([]*types.Technology, 0)
-
 		allTechnologies := asset.Technologies
 		if asset.Technology != "" {
-			allTechnologies = append(allTechnologies, asset.Technology)
-		}
-		for _, technologyName := range allTechnologies {
-			technicalAssetTechnology := technologies.Get(technologyName)
-			if technicalAssetTechnology == nil {
-				return nil, fmt.Errorf("unknown 'technology' value of technical asset %q: %v", title, asset.Technology)
+			technology := input.Technology{
+				Kind: asset.Technology,
 			}
+			allTechnologies = append([]input.Technology{technology}, allTechnologies...)
+		}
+
+		for _, technology := range allTechnologies {
+			technicalAssetTechnology := technologies.Get(technology.Kind)
+			if technicalAssetTechnology == nil {
+				return nil, fmt.Errorf("unknown 'technology' value of technical asset %q: %v", title, technology.Kind)
+			}
+
+			technicalAssetTechnology.CustomName = withDefault(technology.Name, "")
+			technicalAssetTechnology.Description = withDefault(technology.Description, technicalAssetTechnology.Description)
+			technicalAssetTechnology.Version = withDefault(technology.Version, technicalAssetTechnology.Version)
 
 			technicalAssetTechnologies = append(technicalAssetTechnologies, technicalAssetTechnology)
 		}
@@ -341,6 +348,11 @@ func ParseModel(config technologyMapConfigReader, modelInput *input.Model, built
 			}
 		}
 
+		trustLevel, err := types.ParseTrustLevel(asset.TrustLevel)
+		if err != nil {
+			return nil, fmt.Errorf("unknown 'trust_level' value of technical asset %q: %v", title, asset.TrustLevel)
+		}
+
 		err = checkIdSyntax(id)
 		if err != nil {
 			return nil, err
@@ -380,6 +392,8 @@ func ParseModel(config technologyMapConfigReader, modelInput *input.Model, built
 			DataFormatsAccepted:     dataFormatsAccepted,
 			CommunicationLinks:      communicationLinks,
 			DiagramTweakOrder:       asset.DiagramTweakOrder,
+			TrustLevel:              trustLevel,
+			InternallyDeveloped:     asset.InternallyDeveloped,
 		}
 	}
 
