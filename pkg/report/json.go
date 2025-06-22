@@ -9,7 +9,50 @@ import (
 )
 
 func WriteRisksJSON(parsedModel *types.Model, filename string) error {
-	jsonBytes, err := json.Marshal(parsedModel.AllRisks())
+	// Create a structured output that includes category information
+	risksWithCategories := make([]map[string]interface{}, 0)
+
+	for _, category := range parsedModel.SortedRiskCategories() {
+		risks := parsedModel.SortedRisksOfCategory(category)
+		for _, risk := range risks {
+			riskData := map[string]interface{}{
+				// Original Risk struct fields - keep exact field names
+				"category":                         risk.CategoryId,
+				"synthetic_id":                     risk.SyntheticId,
+				"title":                            risk.Title,
+				"severity":                         risk.Severity.String(),
+				"exploitation_likelihood":          risk.ExploitationLikelihood.String(),
+				"exploitation_impact":              risk.ExploitationImpact.String(),
+				"data_breach_probability":          risk.DataBreachProbability.String(),
+				"most_relevant_data_asset":         risk.MostRelevantDataAssetId,
+				"most_relevant_technical_asset":    risk.MostRelevantTechnicalAssetId,
+				"most_relevant_communication_link": risk.MostRelevantCommunicationLinkId,
+				"most_relevant_trust_boundary":     risk.MostRelevantTrustBoundaryId,
+				"most_relevant_shared_runtime":     risk.MostRelevantSharedRuntimeId,
+				"data_breach_technical_assets":     risk.DataBreachTechnicalAssetIDs,
+				"risk_status": func() string {
+					riskTracking := parsedModel.GetRiskTrackingWithDefault(risk)
+					return riskTracking.Status.String()
+				}(),
+
+				// Add STRIDE and other category information as new fields
+				"stride":               category.STRIDE.String(),
+				"stride_title":         category.STRIDE.Title(),
+				"category_title":       category.Title,
+				"category_description": category.Description,
+				"function":             category.Function.String(),
+				"function_title":       category.Function.Title(),
+				"cwe":                  category.CWE,
+				"action":               category.Action,
+				"mitigation":           category.Mitigation,
+				"check":                category.Check,
+			}
+
+			risksWithCategories = append(risksWithCategories, riskData)
+		}
+	}
+
+	jsonBytes, err := json.Marshal(risksWithCategories)
 	if err != nil {
 		return fmt.Errorf("failed to marshal risks to JSON: %w", err)
 	}
