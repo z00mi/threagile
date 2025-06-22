@@ -24,7 +24,7 @@
   - None
   - Unknown
 
-## CVSS Integration
+## CVSS Integration [Planned]
 - Calculate Vector String and Rating according to [NIST CVSS v3 calculator](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator)
   - We threagile ustawić te metryki, które się da 
     - Attack Complexity (AC) -> Likelyhood?
@@ -44,3 +44,20 @@
   - "Service Account"
 - Add new boolean tag `internally_developed`
 - schema do modyfikacji
+
+## Data classification
+ - W raporcie podawać czytelne opisy 
+
+## Personal data
+ - W raporcie podawać czytelne opisy
+
+## Do jsonów nie wpada wszystko co jest potrzebne 
+- type z technologies
+- stride category w risks.json 
+
+## Wyrugować na raporcie elevated całkowicie
+
+## Publikacja rozszerzenia
+
+## Publikacja obrazu dockerowego
+
