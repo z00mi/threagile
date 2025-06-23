@@ -15,13 +15,15 @@ import (
 type TechnicalAssetType int
 
 const (
-	ExternalEntity TechnicalAssetType = iota
+	Undefined TechnicalAssetType = iota
+	ExternalEntity
 	Process
 	Datastore
 )
 
 func TechnicalAssetTypeValues() []TypeEnum {
 	return []TypeEnum{
+		Undefined,
 		ExternalEntity,
 		Process,
 		Datastore,
@@ -29,6 +31,7 @@ func TechnicalAssetTypeValues() []TypeEnum {
 }
 
 var TechnicalAssetTypeDescription = [...]TypeDescription{
+	{"undefined", "Undefined technical asset type"},
 	{"external-entity", "This asset is hosted and managed by a third party"},
 	{"process", "A software process"},
 	{"datastore", "This asset stores data"},
@@ -54,6 +57,7 @@ func ParseTechnicalAssetType(value string) (technicalAssetType TechnicalAssetTyp
 }
 
 func (what TechnicalAssetType) MarshalJSON() ([]byte, error) {
+	// Make sure we marshal it as a JSON string value with quotes
 	return json.Marshal(what.String())
 }
 
@@ -61,6 +65,15 @@ func (what *TechnicalAssetType) UnmarshalJSON(data []byte) error {
 	var text string
 	unmarshalError := json.Unmarshal(data, &text)
 	if unmarshalError != nil {
+		// Check if it's a number (enum index) instead of a string
+		var index int
+		if err := json.Unmarshal(data, &index); err == nil {
+			if index >= 0 && index < len(TechnicalAssetTypeDescription) {
+				*what = TechnicalAssetType(index)
+				return nil
+			}
+			return fmt.Errorf("invalid technical asset type index: %d", index)
+		}
 		return unmarshalError
 	}
 

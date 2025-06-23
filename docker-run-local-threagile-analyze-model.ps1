@@ -6,4 +6,4 @@ param (
 $ModelDirectory = Split-Path -Parent $ThreatModelFilePath
 $ModelFile = Split-Path -Leaf $ThreatModelFilePath
 
-docker run --rm -it -v "${ModelDirectory}:/app/work" threagile:local analyze-model --verbose --model "/app/work/${ModelFile}" --ignore-orphaned-risk-tracking --output /app/work
+docker run --rm -it -v "${ModelDirectory}:/app/work" threagile_local analyze-model --verbose --model "/app/work/${ModelFile}" --ignore-orphaned-risk-tracking --output /app/work
