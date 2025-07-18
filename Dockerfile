@@ -6,7 +6,7 @@
 FROM alpine/git AS clone
 WORKDIR /app
 
-RUN git clone https://github.com/threagile/threagile.git
+RUN git clone https://github.com/z00mi/threagile.git
 
 
 
@@ -26,7 +26,7 @@ COPY --from=clone /app/threagile /app
 RUN go version
 RUN go test ./...
 RUN GOOS=linux go build -ldflags="-X main.buildTimestamp=$(date '+%Y%m%d%H%M%S')" -o risk_demo_rule cmd/risk_demo/main.go
-RUN GOOS=linux go build -ldflags="-X main.buildTimestamp=$(date '+%Y%m%d%H%M%S')" -o threagile
+RUN GOOS=linux go build -ldflags="-X main.buildTimestamp=$(date '+%Y%m%d%H%M%S')" -o threagile cmd/threagile/main.go
 # add the -race parameter to go build call in order to instrument with race condition detector: https://blog.golang.org/race-detector
 # NOTE: copy files with final name to send to final build
 RUN cp /app/demo/example/threagile.yaml /app/demo/example/threagile-example-model.yaml
